@@ -37,7 +37,7 @@
 	text-align: left !important;
 	font-family: monospace !important;
 	font-size: 12px !important;
-	line-height:16px !important;
+	line-height: 16px !important;
 	text-decoration: none !important;
 }
 
@@ -57,11 +57,13 @@
 	background: none !important;
 	line-height: normal !important;
 	white-space: normal !important;
+	width: 100% !important;
 }
 
 /* potential overrides for other styles */
 .wp_syntax pre {
 	background: transparent !important;
+	border: none !important;
 	margin: 0 !important;
 	padding: 0 !important;
 	width: auto !important;
@@ -71,6 +73,7 @@
 	font-family: monospace !important;
 	font-size: 12px !important;
 	line-height: 16px !important;
+	padding: 0 4px !important;
 	white-space: pre !important;
 	-moz-box-shadow: 0px 0px 0px rgba(0, 0, 0, 0) !important; /* FF3.5+ */
 	-webkit-box-shadow: 0px 0px 0px rgba(0, 0, 0, 0) !important; /* Saf3.0+, Chrome */
@@ -83,6 +86,6 @@
 .wp_syntax td.line_numbers pre {
 	background-color: #def !important;
 	color: gray !important;
-	padding: 0 4px !important;
 	text-align: right !important;
+	width: 16px !important;
 }
