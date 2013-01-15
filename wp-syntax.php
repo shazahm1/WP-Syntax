@@ -59,7 +59,7 @@ if (!defined("WP_CONTENT_URL")) define("WP_CONTENT_URL", get_option("siteurl") .
 if (!defined("WP_PLUGIN_URL"))  define("WP_PLUGIN_URL",  WP_CONTENT_URL        . "/plugins");
 
 function wp_syntax_change_mce_options($init) {
-    $ext = 'pre[id|name|class|style|lang|line|escaped|hightlight|src]';
+    $ext = 'pre[id|name|class|style|lang|line|escaped|highlight|src]';
     
     if ( isset($init["extended_valid_elements"]) )
 	{
