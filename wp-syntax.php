@@ -28,6 +28,13 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+/*
+@todo integrate TinyMCE button support using one of these as a base:
+	http://wordpress.org/extend/plugins/wp-syntax-integration/
+	http://wordpress.org/extend/plugins/wp-syntax-button/
+@todo Merge this add-on plugin functionality:  http://wordpress.org/extend/plugins/wp-syntax-download-extension/
+ */
+
 if ( ! class_exists( 'WP_Syntax' ) ) {
 
 	class WP_Syntax {
@@ -99,14 +106,14 @@ if ( ! class_exists( 'WP_Syntax' ) ) {
 			// We want to run before other filters; hence, a priority of 0 was chosen.
 			// The lower the number, the higher the priority.  10 is the default and
 			// several formatting filters run at or around 6.
-			add_filter('the_content', array( __CLASS__, 'beforeFilter' ), 0);
-			add_filter('the_excerpt', array( __CLASS__, 'beforeFilter' ), 0);
-			add_filter('comment_text', array( __CLASS__, 'beforeFilter' ), 0);
+			add_filter( 'the_content', array( __CLASS__, 'beforeFilter' ), 0);
+			add_filter( 'the_excerpt', array( __CLASS__, 'beforeFilter' ), 0);
+			add_filter( 'comment_text', array( __CLASS__, 'beforeFilter' ), 0);
 
 			// We want to run after other filters; hence, a priority of 99.
-			add_filter('the_content', array( __CLASS__, 'afterFilter' ), 99);
-			add_filter('the_excerpt', array( __CLASS__, 'afterFilter' ), 99);
-			add_filter('comment_text', array( __CLASS__, 'afterFilter' ), 99);
+			add_filter( 'the_content', array( __CLASS__, 'afterFilter' ), 99);
+			add_filter( 'the_excerpt', array( __CLASS__, 'afterFilter' ), 99);
+			add_filter( 'comment_text', array( __CLASS__, 'afterFilter' ), 99);
 
 		}
 
