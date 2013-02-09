@@ -1,10 +1,10 @@
 === WP-Syntax ===
-Contributors: shazahm1@hotmail.com, rmm5t
-Donate link: http://connections-pro.com
-Tags: syntax highlighting, syntax, highlight, code, formatting
+Contributors: shazahm1@hotmail.com
+Donate link: http://wp-syntax.com/
+Tags: syntax highlighting, syntax, highlight, code, formatting, code, CSS, html, php, sourcecode
 Requires at least: 3.0
-Tested up to: 3.5
-Stable tag: 0.9.13
+Tested up to: 3.5.1
+Stable tag: 1.0
 
 WP-Syntax provides clean syntax highlighting for embedding source code within pages or posts.
 
@@ -22,6 +22,8 @@ result is source code formatted and highlighted the way you intended.
 
 Usage, Supported Languages, Styling Guidelines, and Release Notes are availabe
 in the [Other Notes](http://wordpress.org/extend/plugins/wp-syntax/other_notes/) section.
+
+Want to contribute? WP-Sytax can be found on Github. Fork and submit your pull requests today!
 
 = Basic Usage =
 
@@ -182,6 +184,14 @@ This allows for a great possibility of different customizations. Be sure to
 review the [GeSHi Documentation](http://qbnz.com/highlighter/geshi-doc.html).
 
 == Changelog ==
+
+= 1.0 02/09/2013 =
+* NEW: CSS3 for alternating background lines for easier reading.
+* OTHER: Completely refactor code to utilize current best practices for plugin development which will provide a solid foundation for further development.
+* OTHER: Remove GeSHi contrib and test folders.
+* OTHER: Move CSS to `css` subfolder.
+* OTHER: Move JavaScript to `js` subfolder.
+* OTHER: CSS fixes to keep theme from breaking output formatting.
 
 = 0.9.13 09/01/12 =
 * FEATURE: Added a new "src" shortcode option to allow reference of the source filename. Props: Steffen Vogel
