@@ -55,10 +55,16 @@
 }
 
 .wp_syntax td.code{
-	background : none !important;
-	line-height: normal !important;
-	white-space: normal !important;
-	width      : 100% !important;
+	background-color: #EEE;
+	background-image: -webkit-linear-gradient( transparent 50%, rgba(255, 255, 255, .9) 50% );
+	background-image: -moz-linear-gradient( transparent 50%, rgba(255, 255, 255, .9) 50% );
+	background-image: -ms-linear-gradient( transparent 50%, rgba(255, 255, 255, .9) 50% );
+	background-image: -o-linear-gradient( transparent 50%, rgba(255, 255, 255, .9) 50% );
+	background-image: linear-gradient( transparent 50%, rgba(255, 255, 255, .9) 50% );
+	background-size : 1px 32px;
+	line-height     : normal !important;
+	white-space     : normal !important;
+	width           : 100% !important;
 }
 
 /* potential overrides for other styles */

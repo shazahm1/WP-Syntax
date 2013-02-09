@@ -33,6 +33,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 	http://wordpress.org/extend/plugins/wp-syntax-integration/
 	http://wordpress.org/extend/plugins/wp-syntax-button/
 @todo Merge this add-on plugin functionality:  http://wordpress.org/extend/plugins/wp-syntax-download-extension/
+
+Look at these:	http://wordpress.org/extend/plugins/wp-synhighlight/
+				http://wordpress.org/extend/plugins/wp-codebox/
  */
 
 if ( ! class_exists( 'WP_Syntax' ) ) {
