@@ -1,6 +1,6 @@
 === WP-Syntax ===
 Contributors: shazahm1@hotmail.com
-Donate link: http://wp-syntax.com/
+Donate link: http://wp-syntax.com/send-donation/
 Tags: syntax highlighting, syntax, highlight, code, formatting, code, CSS, html, php, sourcecode
 Requires at least: 3.0
 Tested up to: 3.5.1
