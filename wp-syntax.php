@@ -51,6 +51,11 @@ if ( ! class_exists( 'WP_Syntax' ) ) {
 
 		private static $matches;
 
+		// Used for caching
+		private static $cache = array();
+		private static $cache_generate = false;
+		private static $cache_match_num = 0;
+
 		/**
 		 * A dummy constructor to prevent WP_Syntax from being loaded more than once.
 		 *
@@ -101,6 +106,12 @@ if ( ! class_exists( 'WP_Syntax' ) ) {
 			// Nothing to translate presently.
 			// load_plugin_textdomain( 'wp_syntax' , false , WPS__DIR_NAME . 'lang' );
 
+			//Invalidate cache whenever new/updated posts/comments are made
+			add_action( 'save_post', array( __CLASS__, 'invalidatePostCache' ) );
+			add_action( 'comment_post', array( __CLASS__, 'invalidateCommentCache' ) );
+			add_action( 'edit_comment', array( __CLASS__, 'invalidateCommentCache' ) );
+
+
 			add_action( 'wp_enqueue_scripts', array( __CLASS__, 'enqueueScripts' ) );
 
 			// Update config for WYSIWYG editor to accept the pre tag and its attributes.
@@ -114,9 +125,9 @@ if ( ! class_exists( 'WP_Syntax' ) ) {
 			add_filter( 'comment_text', array( __CLASS__, 'beforeFilter' ), 0);
 
 			// We want to run after other filters; hence, a priority of 99.
-			add_filter( 'the_content', array( __CLASS__, 'afterFilter' ), 99);
-			add_filter( 'the_excerpt', array( __CLASS__, 'afterFilter' ), 99);
-			add_filter( 'comment_text', array( __CLASS__, 'afterFilter' ), 99);
+			add_filter( 'the_content', array( __CLASS__, 'afterFilterContent' ), 99);
+			add_filter( 'the_excerpt', array( __CLASS__, 'afterFilterExcerpt' ), 99);
+			add_filter( 'comment_text', array( __CLASS__, 'afterFilterComment' ), 99);
 
 		}
 
@@ -136,6 +147,17 @@ if ( ! class_exists( 'WP_Syntax' ) ) {
 			define( 'WPS_BASE_PATH', plugin_dir_path( __FILE__ ) );
 			define( 'WPS_BASE_URL', plugin_dir_url( __FILE__ ) );
 
+		}
+
+		public static function invalidatePostCache( $post_id )
+		{
+			delete_post_meta( $post_id, 'wp-syntax-cache-content');
+			delete_post_meta( $post_id, 'wp-syntax-cache-excerpt');
+		}
+
+		public static function invalidateCommentCache( $comment_id )
+		{
+			delete_comment_meta( $comment_id, 'wp-syntax-cache-comment');
 		}
 
 		private static function inludeDependencies() {
@@ -273,6 +295,13 @@ if ( ! class_exists( 'WP_Syntax' ) ) {
 		public static function highlight( $match ) {
 			// global $wp_syntax_matches;
 
+			// Keep track of which <pre> tag we're up to
+			self::$cache_match_num++;
+
+			// Do we have cache? Serve it!
+			if ( isset(self::$cache[self::$cache_match_num]) )
+				return self::$cache[self::$cache_match_num];
+
 			$i = intval( $match[1] );
 			$match = self::$matches[ $i ];
 
@@ -320,6 +349,9 @@ if ( ! class_exists( 'WP_Syntax' ) ) {
 			$output .= '</td></tr></table>';
 			$output .= '</div>' . "\n";
 
+			if ( self::$cache_generate )
+				self::$cache[self::$cache_match_num] = $output;
+
 			return $output;
 		}
 
@@ -331,6 +363,102 @@ if ( ! class_exists( 'WP_Syntax' ) ) {
 				$content
 			);
 
+		}
+
+		public static function afterFilterContent( $content )
+		{
+			global $post;
+			$the_post = $post;
+			$the_post_id = $post->ID;
+
+			//Reset cache settings on each filter - we might be showing
+			//multiple posts on the one page
+			self::$cache = array();
+			self::$cache_match_num = 0;
+			self::$cache_generate = false;
+
+			if ( is_object($the_post) )
+			{
+				self::$cache = get_post_meta($the_post_id, 'wp-syntax-cache-content', true);
+
+				if ( !self::$cache )
+				{
+					//Make sure self::$cache is an array
+					self::$cache = array();
+					//Inform the highlight() method that we're regenning
+					self::$cache_generate = true;
+				}
+			}
+
+			$content = self::afterFilter( $content );
+
+			//Update cache if we're generating and were there <pre> tags generated
+			if ( is_object($the_post) && self::$cache_generate && self::$cache )
+				update_post_meta($the_post_id, 'wp-syntax-cache-content', self::$cache);
+
+			return $content;
+		}
+
+		public static function afterFilterExcerpt( $content )
+		{
+			global $post;
+			$the_post = $post;
+			$the_post_id = $post->ID;
+
+			//Reset cache settings on each filter - we might be showing
+			//multiple posts on the one page
+			self::$cache = array();
+			self::$cache_match_num = 0;
+			self::$cache_generate = false;
+
+			if ( is_object($the_post) )
+			{
+				self::$cache = get_post_meta($the_post_id, 'wp-syntax-cache-excerpt', true);
+
+				if ( !self::$cache )
+				{
+					//Make sure self::$cache is an array
+					self::$cache = array();
+					//Inform the highlight() method that we're regenning
+					self::$cache_generate = true;
+				}
+			}
+
+			$content = self::afterFilter( $content );
+
+			//Update cache if we're generating and were there <pre> tags generated
+			if ( is_object($the_post) && self::$cache_generate && self::$cache )
+				update_post_meta($the_post_id, 'wp-syntax-cache-excerpt', self::$cache);
+
+			return $content;
+		}
+
+		public static function afterFilterComment( $content )
+		{
+			global $comment;
+			$the_post = $comment;
+			$the_post_id = $comment->comment_ID;
+
+			if ( is_object($the_post) )
+			{
+				self::$cache = get_comment_meta($the_post_id, 'wp-syntax-cache-comment', true);
+
+				if ( !self::$cache )
+				{
+					//Make sure self::$cache is an array
+					self::$cache = array();
+					//Inform the highlight() method that we're regenning
+					self::$cache_generate = true;
+				}
+			}
+
+			$content = self::afterFilter( $content );
+
+			//Update cache if we're generating and were there <pre> tags generated
+			if ( is_object($the_post) && self::$cache_generate && self::$cache )
+				update_comment_meta($the_post_id, 'wp-syntax-cache-comment', self::$cache);
+
+			return $content;
 		}
 
 		public static function afterFilter( $content ) {
