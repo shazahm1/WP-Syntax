@@ -42,20 +42,20 @@ jQuery(document).ready(function($)
 				ta.html(code);
 				
 				var pre = jthis.find('.code > pre');
-				ta.css('font-family', pre.css('font-family'));
-				ta.css('font-size', pre.css('font-size'));
-				ta.css('line-height', pre.css('line-height'));
 				
-				ta.css('height', "100%");
-				ta.css('width', "100%");
-				
-				ta.css('position','absolute');
-				ta.css('top', 0);
-				ta.css('left',0);
-				ta.css('margin', 0);
-				ta.css('padding-left', pre.css('padding-left'));
-				ta.css('padding-top', pre.css('padding-top'));
-				ta.css('border','0px');
+				ta.css({
+					'font-family': pre.css('font-family'),
+					'font-size': pre.css('font-size'),
+					'line-height': pre.css('line-height'),
+					'height': "100%",
+					'width': "100%",
+					'position': 'absolute',
+					'top': 0,
+					'left': 0,
+					'margin': pre.css('margin'),
+					'padding': pre.css('padding'),
+					'border': '0px'	
+				});
 				
 				ta.css('resize','none');
 				ta.css('outline','none');
@@ -65,11 +65,19 @@ jQuery(document).ready(function($)
 					jthis.data('hasTextArea',false);
 				});
 				
-				//readjust position and size if using line numbers
+				//readjust position and width if using line numbers
 				var line_numbers = jthis.find(".line_numbers");
 				if (line_numbers.length != 0) {
-					ta.css('left',line_numbers.width()+"px");
-					ta.css('width', jthis.width()-line_numbers.width()+"px");
+					var w = line_numbers.outerWidth();
+					ta.css('left',w+"px");
+					ta.css('width', jthis.width()-w+"px");
+				}
+				//readjust position and height if using caption 
+				var caption = jthis.find('caption');
+				if (caption.length != 0) {
+					var h = caption.outerHeight();
+					ta.css('top',h+"px");
+					ta.css('height',jthis.height()-h+"px");
 				}
 				
 				ta.appendTo(jthis);
