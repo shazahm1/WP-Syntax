@@ -29,6 +29,65 @@ jQuery(document).ready(function($)
 		mouseout: function()
 		{
 			//$(this).removeAttr('style');
-		}					
+		},
+		dblclick: function()
+		{
+			//Create text area on top of code on double click
+			//This can make copying of the code easier
+			
+			jthis = $(this);
+			if (!jthis.data('hasTextArea')) {
+				var code = jthis.find(".theCode").html();
+				var ta = $('<textarea spellcheck="false"/>');
+				ta.html(code);
+				
+				var pre = jthis.find('.code > pre');
+				
+				ta.css({
+					'font-family': pre.css('font-family'),
+					'font-size': pre.css('font-size'),
+					'line-height': pre.css('line-height'),
+					'height': "100%",
+					'width': "100%",
+					'position': 'absolute',
+					'top': 0,
+					'left': 0,
+					'margin': pre.css('margin'),
+					'padding': pre.css('padding'),
+					'border': '0px'	
+				});
+				
+				ta.css('resize','none');
+				ta.css('outline','none');
+				
+				ta.focusout(function(){
+					ta.remove();
+					jthis.data('hasTextArea',false);
+				});
+				
+				//readjust position and width if using line numbers
+				var line_numbers = jthis.find(".line_numbers");
+				if (line_numbers.length != 0) {
+					var w = line_numbers.outerWidth();
+					ta.css('left',w+"px");
+					ta.css('width', jthis.width()-w+"px");
+				}
+				//readjust position and height if using caption 
+				var caption = jthis.find('caption');
+				if (caption.length != 0) {
+					var h = caption.outerHeight();
+					ta.css('top',h+"px");
+					ta.css('height',jthis.height()-h+"px");
+				}
+				
+				ta.appendTo(jthis);
+				
+				ta.select();
+				ta.focus();
+				
+				jthis.data('hasTextArea',true);
+			
+			}
+		}
 	});
 });

@@ -6,6 +6,7 @@ Description: Syntax highlighting using <a href="http://qbnz.com/highlighter/">Ge
 Version: 1.0
 Author: Steven A. Zahm
 Author URI: http://www.connections-pro.com
+Contributor: zavr
 License: GPL2
 Text Domain: wp_syntax
 Domain Path: /lang
@@ -180,9 +181,12 @@ if ( ! class_exists( 'WP_Syntax' ) ) {
 
 			// Enqueue the CSS
 			wp_enqueue_style( 'wp-syntax-css', $url, array(), WPS_VERSION );
+			
+			// Enqueue the Adobe Source Code Pro font
+			wp_enqueue_style( 'source-code-font', 'http://fonts.googleapis.com/css?family=Source+Code+Pro');
 
 			// Enqueue the JavaScript
-			// wp_enqueue_script( 'wp-syntax-js', WPS_BASE_URL . 'js/wp-syntax.js', array( 'jquery' ), WPS_VERSION, TRUE );
+			wp_enqueue_script( 'wp-syntax-js', WPS_BASE_URL . 'js/wp-syntax.js', array( 'jquery' ), WPS_VERSION, TRUE );
 
 		}
 
@@ -226,7 +230,10 @@ if ( ! class_exists( 'WP_Syntax' ) ) {
 		public static function lineNumbers( $code, $start ) {
 
 			$line_count = count( explode( "\n", $code ) );
-			$output = '<pre>';
+			$num_digits = strlen(strval($start + $line_count));
+			$px_width_needed = 8 * $num_digits;
+
+			$output = "<pre style=\"width: {$px_width_needed}px !important;\">";
 
 			for ( $i = 0; $i < $line_count; $i++ ) {
 				$output .= ( $start + $i ) . "\n";
@@ -302,7 +309,7 @@ if ( ! class_exists( 'WP_Syntax' ) ) {
 				$geshi->highlight_lines_extra( $lines );
 			}
 
-			$output = "\n" . '<div class="wp_syntax">';
+			$output = "\n" . '<div class="wp_syntax" style="position:relative;">';
 			$output .= '<table>';
 
 			if ( ! empty( $caption ) ) {
@@ -318,6 +325,7 @@ if ( ! class_exists( 'WP_Syntax' ) ) {
 			$output .= '<td class="code">';
 			$output .= $geshi->parse_code();
 			$output .= '</td></tr></table>';
+			$output .= '<p class="theCode" style="display:none;">'.htmlspecialchars($code).'</p>';
 			$output .= '</div>' . "\n";
 
 			return $output;
