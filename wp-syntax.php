@@ -88,7 +88,7 @@ if ( ! class_exists( 'WP_Syntax' ) ) {
 		private function init() {
 
 			self::defineConstants();
-			self::inludeDependencies();
+			self::includeDependencies();
 
 			self::$token = md5( uniqid( rand() ) );
 
@@ -138,9 +138,11 @@ if ( ! class_exists( 'WP_Syntax' ) ) {
 
 		}
 
-		private static function inludeDependencies() {
+		private static function includeDependencies() {
 
-			include_once( 'geshi/geshi.php' );
+			if (!class_exists('GeSHi')) {
+				include_once( 'geshi/geshi.php' );
+			}
 
 		}
 
