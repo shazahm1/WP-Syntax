@@ -43,8 +43,8 @@ if ( ! class_exists( 'WP_Syntax' ) ) {
 	class WP_Syntax {
 
 		/**
-		* @var (object) WP_Syntax stores the instance of this class.
-		*/
+		 * @var WP_Syntax stores the instance of this class.
+		 */
 		private static $instance;
 
 		private static $token;
@@ -68,11 +68,11 @@ if ( ! class_exists( 'WP_Syntax' ) ) {
 		 *
 		 * @access public
 		 * @since 1.0
-		 * @return object WP_Syntax
+		 * @return \WP_Syntax
 		 */
 		public static function getInstance() {
 			if ( ! isset( self::$instance ) ) {
-				self::$instance = new self;
+				self::$instance = new self();
 				self::$instance->init();
 			}
 			return self::$instance;
@@ -86,7 +86,6 @@ if ( ! class_exists( 'WP_Syntax' ) ) {
 		 * @return void
 		 */
 		private function init() {
-
 			self::defineConstants();
 			self::inludeDependencies();
 
@@ -336,11 +335,11 @@ if ( ! class_exists( 'WP_Syntax' ) ) {
 		public static function afterFilter( $content ) {
 			// global $wp_syntax_token;
 
-			 $content = preg_replace_callback(
-				 '/<p>\s*' . self::$token . '(\d{3})\s*<\/p>/si',
-				 array( __CLASS__, 'highlight' ),
-				 $content
-			 );
+			$content = preg_replace_callback(
+				'/<p>\s*' . self::$token . '(\d{3})\s*<\/p>/si',
+				array( __CLASS__, 'highlight' ),
+				$content
+			);
 
 			return $content;
 		}
@@ -354,19 +353,19 @@ if ( ! class_exists( 'WP_Syntax' ) ) {
 	 * Use this function like you would a global variable, except without needing
 	 * to declare the global.
 	 *
-	 * Example: <?php $wp_syntex = WP_Syntax(); ?>
+	 * @example : <?php $wp_syntex = wp_syntax_instance(); ?>
 	 *
 	 * @access public
 	 * @since 1.0
-	 * @return mixed (object)
+	 * @return \WP_Syntax
 	 */
-	function WP_Syntax() {
+	function wp_syntax_instance() {
 		return WP_Syntax::getInstance();
 	}
 
 	/**
 	 * Start the plugin.
 	 */
-	add_action( 'plugins_loaded', 'WP_Syntax' );
+	add_action( 'plugins_loaded', 'wp_syntax_instance' );
 
 }
