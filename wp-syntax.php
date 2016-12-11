@@ -360,7 +360,7 @@ if ( ! class_exists( 'WP_Syntax' ) ) {
 	 * @since 1.0
 	 * @return mixed (object)
 	 */
-	function WP_Syntax() {
+	function __construct() {
 		return WP_Syntax::getInstance();
 	}
 
