@@ -251,10 +251,7 @@ if ( ! class_exists( 'WP_Syntax' ) ) {
 		public static function lineNumbers( $code, $start ) {
 
 			$line_count = count( explode( "\n", $code ) );
-			$num_digits = strlen(strval($start + $line_count));
-			$px_width_needed = 8 * $num_digits;
-
-			$output = "<pre style=\"width: {$px_width_needed}px !important;\">";
+			$output = '<pre>';
 
 			for ( $i = 0; $i < $line_count; $i++ ) {
 				$output .= ( $start + $i ) . "\n";
