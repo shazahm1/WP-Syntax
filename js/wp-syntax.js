@@ -38,7 +38,7 @@ jQuery(document).ready(function($)
 			//Create text area on top of code on double click
 			//This can make copying of the code easier
 			
-			jthis = $(this);
+			var jthis = $(this);
 			if (!jthis.data('hasTextArea')) {
 				var code = jthis.find(".theCode").html();
 				var ta = $('<textarea spellcheck="false"/>');
