@@ -3,7 +3,7 @@ Contributors: shazahm1@hotmail.com
 Donate link: http://wp-syntax.com/send-donation/
 Tags: syntax highlighting, syntax, highlight, code, formatting, code, CSS, html, php, sourcecode
 Requires at least: 3.0
-Tested up to: 3.5.1
+Tested up to: 4.7
 Stable tag: 1.0
 
 WP-Syntax provides clean syntax highlighting for embedding source code within pages or posts.
