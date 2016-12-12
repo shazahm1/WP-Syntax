@@ -73,7 +73,7 @@ if ( ! class_exists( 'WP_Syntax' ) ) {
 		 *
 		 * @access public
 		 * @since 1.0
-		 * @return object WP_Syntax
+		 * @return WP_Syntax
 		 */
 		public static function getInstance() {
 			if ( ! isset( self::$instance ) ) {
@@ -485,7 +485,7 @@ if ( ! class_exists( 'WP_Syntax' ) ) {
 	 *
 	 * @access public
 	 * @since 1.0
-	 * @return mixed (object)
+	 * @return WP_Syntax
 	 */
 	function WP_Syntax() {
 		return WP_Syntax::getInstance();
