@@ -23,8 +23,11 @@ jQuery(document).ready(function($)
 			});
 			*/
 			
-			if(w > $(this).outerWidth())
-				$(this).css({'position':'relative', 'z-index':'9999', 'box-shadow':'5px 5px 5px #888', 'width':(w > hw ? hw : w)+'px'});
+
+			if(w > $(this).outerWidth()) {
+				// $(this).css({'position':'relative', 'z-index':'9999', 'box-shadow':'5px 5px 5px #888', 'width':(w > hw ? hw : w)+'px'});
+				$(this).css({'position':'relative', 'z-index':'9999', 'width':(w > hw ? hw : w)+'px'});
+			}
 		},
 		mouseout: function()
 		{
