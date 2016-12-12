@@ -43,8 +43,8 @@ if ( ! class_exists( 'WP_Syntax' ) ) {
 	class WP_Syntax {
 
 		/**
-		* @var (object) WP_Syntax stores the instance of this class.
-		*/
+		 * @var  WP_Syntax stores the instance of this class.
+		 */
 		private static $instance;
 
 		private static $token;
@@ -191,8 +191,8 @@ if ( ! class_exists( 'WP_Syntax' ) ) {
 		 *
 		 * @access private
 		 * @since 0.9.13
-		 * @param  (array) $init The TinyMCE config.
-		 * @return (array)
+		 * @param  array $init The TinyMCE config.
+		 * @return array
 		 */
 		public static function tinyMCEConfig( $init ) {
 
