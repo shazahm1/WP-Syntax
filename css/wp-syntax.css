@@ -24,7 +24,7 @@
 
 .wp_syntax caption {
 	margin          : 0 !important;
-	padding         : 2px !important;
+	padding         : 2px 0 !important;
 	width           : 100% !important;
 	background-color: #def !important;
 	text-align      : left !important;
