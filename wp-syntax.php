@@ -265,7 +265,7 @@ if ( ! class_exists( 'WP_Syntax' ) ) {
 			$caption = '';
 
 			if ( ! isset( $path['filename'] ) ) {
-				return;
+				return '';
 			}
 
 			if ( isset( $parsed['scheme'] ) ) {
