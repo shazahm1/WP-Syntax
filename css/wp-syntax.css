@@ -81,9 +81,9 @@
 	line-height          : 16px !important;
 	padding              : 0 4px !important;
 	white-space          : pre !important;
-	-moz-box-shadow      : 0px 0px 0px rgba(0, 0, 0, 0) !important; /* FF3.5+ */
-	-webkit-box-shadow   : 0px 0px 0px rgba(0, 0, 0, 0) !important; /* Saf3.0+, Chrome */
-	box-shadow           : 0px 0px 0px rgba(0, 0, 0, 0) !important; /* Opera 10.5, IE 9.0 */
+	-moz-box-shadow      : 0 0 0 rgba(0, 0, 0, 0) !important; /* FF3.5+ */
+	-webkit-box-shadow   : 0 0 0 rgba(0, 0, 0, 0) !important; /* Saf3.0+, Chrome */
+	box-shadow           : 0 0 0 rgba(0, 0, 0, 0) !important; /* Opera 10.5, IE 9.0 */
 	-webkit-border-radius: 0 !important;
 	-moz-border-radius   : 0 !important;
 	border-radius        : 0 !important;
