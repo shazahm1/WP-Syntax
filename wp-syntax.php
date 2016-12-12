@@ -6,7 +6,6 @@ Description: Syntax highlighting using <a href="http://qbnz.com/highlighter/">Ge
 Version: 1.0
 Author: Steven A. Zahm
 Author URI: http://www.connections-pro.com
-Contributor: zavr
 License: GPL2
 Text Domain: wp_syntax
 Domain Path: /lang
