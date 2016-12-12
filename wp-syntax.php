@@ -463,11 +463,11 @@ if ( ! class_exists( 'WP_Syntax' ) ) {
 		public static function afterFilter( $content ) {
 			// global $wp_syntax_token;
 
-			 $content = preg_replace_callback(
-				 '/<p>\s*' . self::$token . '(\d{3})\s*<\/p>/si',
-				 array( __CLASS__, 'highlight' ),
-				 $content
-			 );
+			$content = preg_replace_callback(
+				'/<p>\s*' . self::$token . '(\d{3})\s*<\/p>/si',
+				array( __CLASS__, 'highlight' ),
+				$content
+			);
 
 			return $content;
 		}
