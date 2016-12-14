@@ -30,7 +30,8 @@ jQuery(document).ready(function($)
 		},
 		mouseout: function()
 		{
-			//$(this).removeAttr('style');
+			// $(this).removeAttr('style');
+			$(this).css({'position':'relative', 'z-index':'', 'width':'auto'});
 		},
 		dblclick: function()
 		{
