@@ -72,7 +72,8 @@ if ( ! class_exists( 'WP_Syntax' ) ) {
 		 * Insures that only one instance of WP_Syntax exists in memory at any one time.
 		 *
 		 * @access public
-		 * @since 1.0
+		 * @since  1.0
+		 *
 		 * @return WP_Syntax
 		 */
 		public static function getInstance() {
