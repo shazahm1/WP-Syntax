@@ -185,6 +185,20 @@ review the [GeSHi Documentation](http://qbnz.com/highlighter/geshi-doc.html).
 
 == Changelog ==
 
+= 1.1 12/14/2016 =
+* NEW: Introduce caching of the syntax highlighted code rather than parsing it on page load.
+* NEW: Introduce double click to copy code from highlight code block. Props zavr!
+* TWEAK: PHP 7.1 compatibility.
+* TWEAK: Remove horizontal padding from caption.
+* TWEAK: Remove duplicate CSS padding property.
+* TWEAK: Remove the unnecessary px from properties set as `0` in CSS.
+* TWEAK: Adjust font size of highlight code for better vertical alignment.
+* BUG: Ensure string is return in caption.
+* BUG: Fix line numbering bug.
+* BUG: Remove old plugin file.
+* OTHER: UPDATE GeSHi to latest dev branch.
+* DEV: Correct phpDoc errors.
+
 = 1.0 02/09/2013 =
 * NEW: CSS3 for alternating background lines for easier reading.
 * OTHER: Completely refactor code to utilize current best practices for plugin development which will provide a solid foundation for further development.
