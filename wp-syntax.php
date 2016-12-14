@@ -362,11 +362,22 @@ if ( ! class_exists( 'WP_Syntax' ) ) {
 
 		public static function beforeFilter( $content ) {
 
-			return preg_replace_callback(
-				"/\s*<pre(?:lang=[\"']([\w-]+)[\"']|line=[\"'](\d*)[\"']|escaped=[\"'](true|false)?[\"']|highlight=[\"']((?:\d+[,-])*\d+)[\"']|src=[\"']([^\"']+)[\"']|\s)+>(.*)<\/pre>\s*/siU",
-				array( __CLASS__, 'substituteToken' ),
-				$content
-			);
+			/*
+			 * Run this only after the page head has been rendered.
+			 * This is to make it compatible with Yoast SEO. Unfortunately if this filter is run any sooner, any shortcodes
+			 * which may exist in the post/page content is stripped by Yoast SEO so when code blocks are cached, they will be
+			 * cached without the shortcodes in the code blocks. Other than this it seems to work correctly.
+			 *
+			 * NOTE: Yoast seems to do this as part of rendering the opengraph in the page head.
+			 */
+			if ( did_action( 'wp_print_scripts' ) ) {
+
+				return preg_replace_callback(
+					"/\s*<pre(?:lang=[\"']([\w-]+)[\"']|line=[\"'](\d*)[\"']|escaped=[\"'](true|false)?[\"']|highlight=[\"']((?:\d+[,-])*\d+)[\"']|src=[\"']([^\"']+)[\"']|\s)+>(.*)<\/pre>\s*/siU",
+					array( __CLASS__, 'substituteToken' ),
+					$content
+				);
+			}
 
 		}
 
