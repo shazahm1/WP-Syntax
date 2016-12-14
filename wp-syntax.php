@@ -415,7 +415,7 @@ if ( ! class_exists( 'WP_Syntax' ) ) {
 
 			//Update cache if we're generating and were there <pre> tags generated
 			if ( is_object( $the_post ) && self::$cache_generate && self::$cache ) {
-				update_post_meta( $the_post_id, 'wp-syntax-cache-content', self::$cache );
+				update_post_meta( $the_post_id, 'wp-syntax-cache-content', wp_slash( self::$cache ) );
 			}
 
 			return $content;
