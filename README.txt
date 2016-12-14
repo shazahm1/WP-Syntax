@@ -3,8 +3,8 @@ Contributors: shazahm1@hotmail.com
 Donate link: http://wp-syntax.com/send-donation/
 Tags: syntax highlighting, syntax, highlight, code, formatting, code, CSS, html, php, sourcecode
 Requires at least: 3.0
-Tested up to: 3.5.1
-Stable tag: 1.0
+Tested up to: 4.7
+Stable tag: 1.1
 
 WP-Syntax provides clean syntax highlighting for embedding source code within pages or posts.
 
@@ -184,6 +184,20 @@ This allows for a great possibility of different customizations. Be sure to
 review the [GeSHi Documentation](http://qbnz.com/highlighter/geshi-doc.html).
 
 == Changelog ==
+
+= 1.1 12/14/2016 =
+* NEW: Introduce caching of the syntax highlighted code rather than parsing it on page load.
+* NEW: Introduce double click to copy code from highlight code block. Props zavr!
+* TWEAK: PHP 7.1 compatibility.
+* TWEAK: Remove horizontal padding from caption.
+* TWEAK: Remove duplicate CSS padding property.
+* TWEAK: Remove the unnecessary px from properties set as `0` in CSS.
+* TWEAK: Adjust font size of highlight code for better vertical alignment.
+* BUG: Ensure string is return in caption.
+* BUG: Fix line numbering bug.
+* BUG: Remove old plugin file.
+* OTHER: UPDATE GeSHi to latest dev branch.
+* DEV: Correct phpDoc errors.
 
 = 1.0 02/09/2013 =
 * NEW: CSS3 for alternating background lines for easier reading.

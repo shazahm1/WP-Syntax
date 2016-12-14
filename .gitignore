@@ -146,6 +146,10 @@ sdist
 develop-eggs
 .installed.cfg
 
+# phpStorm #
+############
+.idea
+
 # Installer logs
 pip-log.txt
 

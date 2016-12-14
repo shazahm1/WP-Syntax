@@ -3,7 +3,7 @@
 Plugin Name: WP-Syntax
 Plugin URI: http://www.connections-pro.com
 Description: Syntax highlighting using <a href="http://qbnz.com/highlighter/">GeSHi</a> supporting a wide range of popular languages.
-Version: 1.0
+Version: 1.1
 Author: Steven A. Zahm
 Author URI: http://www.connections-pro.com
 License: GPL2
@@ -43,13 +43,18 @@ if ( ! class_exists( 'WP_Syntax' ) ) {
 	class WP_Syntax {
 
 		/**
-		* @var (object) WP_Syntax stores the instance of this class.
-		*/
+		 * @var  WP_Syntax stores the instance of this class.
+		 */
 		private static $instance;
 
 		private static $token;
 
 		private static $matches;
+
+		// Used for caching
+		private static $cache = array();
+		private static $cache_generate = false;
+		private static $cache_match_num = 0;
 
 		/**
 		 * A dummy constructor to prevent WP_Syntax from being loaded more than once.
@@ -67,8 +72,9 @@ if ( ! class_exists( 'WP_Syntax' ) ) {
 		 * Insures that only one instance of WP_Syntax exists in memory at any one time.
 		 *
 		 * @access public
-		 * @since 1.0
-		 * @return object WP_Syntax
+		 * @since  1.0
+		 *
+		 * @return WP_Syntax
 		 */
 		public static function getInstance() {
 			if ( ! isset( self::$instance ) ) {
@@ -101,6 +107,11 @@ if ( ! class_exists( 'WP_Syntax' ) ) {
 			// Nothing to translate presently.
 			// load_plugin_textdomain( 'wp_syntax' , false , WPS__DIR_NAME . 'lang' );
 
+			//Invalidate cache whenever new/updated posts/comments are made
+			add_action( 'save_post', array( __CLASS__, 'invalidatePostCache' ) );
+			add_action( 'comment_post', array( __CLASS__, 'invalidateCommentCache' ) );
+			add_action( 'edit_comment', array( __CLASS__, 'invalidateCommentCache' ) );
+
 			add_action( 'wp_enqueue_scripts', array( __CLASS__, 'enqueueScripts' ) );
 
 			// Update config for WYSIWYG editor to accept the pre tag and its attributes.
@@ -109,15 +120,14 @@ if ( ! class_exists( 'WP_Syntax' ) ) {
 			// We want to run before other filters; hence, a priority of 0 was chosen.
 			// The lower the number, the higher the priority.  10 is the default and
 			// several formatting filters run at or around 6.
-			add_filter( 'the_content', array( __CLASS__, 'beforeFilter' ), 0);
-			add_filter( 'the_excerpt', array( __CLASS__, 'beforeFilter' ), 0);
-			add_filter( 'comment_text', array( __CLASS__, 'beforeFilter' ), 0);
+			add_filter( 'the_content', array( __CLASS__, 'beforeFilter' ), 0 );
+			add_filter( 'the_excerpt', array( __CLASS__, 'beforeFilter' ), 0 );
+			add_filter( 'comment_text', array( __CLASS__, 'beforeFilter' ), 0 );
 
 			// We want to run after other filters; hence, a priority of 99.
-			add_filter( 'the_content', array( __CLASS__, 'afterFilter' ), 99);
-			add_filter( 'the_excerpt', array( __CLASS__, 'afterFilter' ), 99);
-			add_filter( 'comment_text', array( __CLASS__, 'afterFilter' ), 99);
-
+			add_filter( 'the_content', array( __CLASS__, 'afterFilterContent' ), 99 );
+			add_filter( 'the_excerpt', array( __CLASS__, 'afterFilterExcerpt' ), 99 );
+			add_filter( 'comment_text', array( __CLASS__, 'afterFilterComment' ), 99 );
 		}
 
 		/**
@@ -129,13 +139,24 @@ if ( ! class_exists( 'WP_Syntax' ) ) {
 		 */
 		private static function defineConstants() {
 
-			define( 'WPS_VERSION', '1.0' );
+			define( 'WPS_VERSION', '1.1' );
 
 			define( 'WPS_DIR_NAME', plugin_basename( dirname( __FILE__ ) ) );
 			define( 'WPS_BASE_NAME', plugin_basename( __FILE__ ) );
 			define( 'WPS_BASE_PATH', plugin_dir_path( __FILE__ ) );
 			define( 'WPS_BASE_URL', plugin_dir_url( __FILE__ ) );
 
+		}
+
+		public static function invalidatePostCache( $post_id ) {
+
+			delete_post_meta( $post_id, 'wp-syntax-cache-content' );
+			delete_post_meta( $post_id, 'wp-syntax-cache-excerpt' );
+		}
+
+		public static function invalidateCommentCache( $comment_id ) {
+
+			delete_comment_meta( $comment_id, 'wp-syntax-cache-comment' );
 		}
 
 		private static function inludeDependencies() {
@@ -181,8 +202,11 @@ if ( ! class_exists( 'WP_Syntax' ) ) {
 			// Enqueue the CSS
 			wp_enqueue_style( 'wp-syntax-css', $url, array(), WPS_VERSION );
 
+			// Enqueue the Adobe Source Code Pro font
+			//wp_enqueue_style( 'source-code-font', 'http://fonts.googleapis.com/css?family=Source+Code+Pro');
+
 			// Enqueue the JavaScript
-			// wp_enqueue_script( 'wp-syntax-js', WPS_BASE_URL . 'js/wp-syntax.js', array( 'jquery' ), WPS_VERSION, TRUE );
+			wp_enqueue_script( 'wp-syntax-js', WPS_BASE_URL . 'js/wp-syntax.js', array( 'jquery' ), WPS_VERSION, TRUE );
 
 		}
 
@@ -191,8 +215,8 @@ if ( ! class_exists( 'WP_Syntax' ) ) {
 		 *
 		 * @access private
 		 * @since 0.9.13
-		 * @param  (array) $init The TinyMCE config.
-		 * @return (array)
+		 * @param  array $init The TinyMCE config.
+		 * @return array
 		 */
 		public static function tinyMCEConfig( $init ) {
 
@@ -244,7 +268,7 @@ if ( ! class_exists( 'WP_Syntax' ) ) {
 			$caption = '';
 
 			if ( ! isset( $path['filename'] ) ) {
-				return;
+				return '';
 			}
 
 			if ( isset( $parsed['scheme'] ) ) {
@@ -272,6 +296,14 @@ if ( ! class_exists( 'WP_Syntax' ) ) {
 
 		public static function highlight( $match ) {
 			// global $wp_syntax_matches;
+
+			// Keep track of which <pre> tag we're up to
+			self::$cache_match_num++;
+
+			// Do we have cache? Serve it!
+			if ( isset( self::$cache[ self::$cache_match_num ] ) ) {
+				return self::$cache[ self::$cache_match_num ];
+			}
 
 			$i = intval( $match[1] );
 			$match = self::$matches[ $i ];
@@ -302,7 +334,7 @@ if ( ! class_exists( 'WP_Syntax' ) ) {
 				$geshi->highlight_lines_extra( $lines );
 			}
 
-			$output = "\n" . '<div class="wp_syntax">';
+			$output = "\n" . '<div class="wp_syntax" style="position:relative;">';
 			$output .= '<table>';
 
 			if ( ! empty( $caption ) ) {
@@ -318,29 +350,139 @@ if ( ! class_exists( 'WP_Syntax' ) ) {
 			$output .= '<td class="code">';
 			$output .= $geshi->parse_code();
 			$output .= '</td></tr></table>';
+			$output .= '<p class="theCode" style="display:none;">'.htmlspecialchars($code).'</p>';
 			$output .= '</div>' . "\n";
+
+			if ( self::$cache_generate ) {
+				self::$cache[ self::$cache_match_num ] = $output;
+			}
 
 			return $output;
 		}
 
 		public static function beforeFilter( $content ) {
 
-			return preg_replace_callback(
-				"/\s*<pre(?:lang=[\"']([\w-]+)[\"']|line=[\"'](\d*)[\"']|escaped=[\"'](true|false)?[\"']|highlight=[\"']((?:\d+[,-])*\d+)[\"']|src=[\"']([^\"']+)[\"']|\s)+>(.*)<\/pre>\s*/siU",
-				array( __CLASS__, 'substituteToken' ),
-				$content
-			);
+			/*
+			 * Run this only after the page head has been rendered.
+			 * This is to make it compatible with Yoast SEO. Unfortunately if this filter is run any sooner, any shortcodes
+			 * which may exist in the post/page content is stripped by Yoast SEO so when code blocks are cached, they will be
+			 * cached without the shortcodes in the code blocks. Other than this it seems to work correctly.
+			 *
+			 * NOTE: Yoast seems to do this as part of rendering the opengraph in the page head.
+			 */
+			if ( did_action( 'wp_print_scripts' ) ) {
 
+				return preg_replace_callback(
+					"/\s*<pre(?:lang=[\"']([\w-]+)[\"']|line=[\"'](\d*)[\"']|escaped=[\"'](true|false)?[\"']|highlight=[\"']((?:\d+[,-])*\d+)[\"']|src=[\"']([^\"']+)[\"']|\s)+>(.*)<\/pre>\s*/siU",
+					array( __CLASS__, 'substituteToken' ),
+					$content
+				);
+			}
+
+		}
+
+		public static function afterFilterContent( $content ) {
+
+			global $post;
+
+			$the_post    = $post;
+			$the_post_id = $post->ID;
+
+			//Reset cache settings on each filter - we might be showing
+			//multiple posts on the one page
+			self::$cache           = array();
+			self::$cache_match_num = 0;
+			self::$cache_generate  = FALSE;
+
+			if ( is_object( $the_post ) ) {
+				self::$cache = get_post_meta( $the_post_id, 'wp-syntax-cache-content', TRUE );
+
+				if ( ! self::$cache ) {
+					//Make sure self::$cache is an array
+					self::$cache = array();
+					//Inform the highlight() method that we're regenning
+					self::$cache_generate = TRUE;
+				}
+			}
+
+			$content = self::afterFilter( $content );
+
+			//Update cache if we're generating and were there <pre> tags generated
+			if ( is_object( $the_post ) && self::$cache_generate && self::$cache ) {
+				update_post_meta( $the_post_id, 'wp-syntax-cache-content', self::$cache );
+			}
+
+			return $content;
+		}
+
+		public static function afterFilterExcerpt( $content ) {
+
+			global $post;
+			$the_post    = $post;
+			$the_post_id = $post->ID;
+
+			//Reset cache settings on each filter - we might be showing
+			//multiple posts on the one page
+			self::$cache           = array();
+			self::$cache_match_num = 0;
+			self::$cache_generate  = FALSE;
+
+			if ( is_object( $the_post ) ) {
+				self::$cache = get_post_meta( $the_post_id, 'wp-syntax-cache-excerpt', TRUE );
+
+				if ( ! self::$cache ) {
+					//Make sure self::$cache is an array
+					self::$cache = array();
+					//Inform the highlight() method that we're regenning
+					self::$cache_generate = TRUE;
+				}
+			}
+
+			$content = self::afterFilter( $content );
+
+			//Update cache if we're generating and were there <pre> tags generated
+			if ( is_object( $the_post ) && self::$cache_generate && self::$cache ) {
+				update_post_meta( $the_post_id, 'wp-syntax-cache-excerpt', self::$cache );
+			}
+
+			return $content;
+		}
+
+		public static function afterFilterComment( $content ) {
+
+			global $comment;
+			$the_post    = $comment;
+			$the_post_id = $comment->comment_ID;
+
+			if ( is_object( $the_post ) ) {
+				self::$cache = get_comment_meta( $the_post_id, 'wp-syntax-cache-comment', TRUE );
+
+				if ( ! self::$cache ) {
+					//Make sure self::$cache is an array
+					self::$cache = array();
+					//Inform the highlight() method that we're regenning
+					self::$cache_generate = TRUE;
+				}
+			}
+
+			$content = self::afterFilter( $content );
+
+			//Update cache if we're generating and were there <pre> tags generated
+			if ( is_object( $the_post ) && self::$cache_generate && self::$cache ) {
+				update_comment_meta( $the_post_id, 'wp-syntax-cache-comment', self::$cache );
+			}
+
+			return $content;
 		}
 
 		public static function afterFilter( $content ) {
 			// global $wp_syntax_token;
 
-			 $content = preg_replace_callback(
-				 '/<p>\s*' . self::$token . '(\d{3})\s*<\/p>/si',
-				 array( __CLASS__, 'highlight' ),
-				 $content
-			 );
+			$content = preg_replace_callback(
+				'/<p>\s*' . self::$token . '(\d{3})\s*<\/p>/si',
+				array( __CLASS__, 'highlight' ),
+				$content
+			);
 
 			return $content;
 		}
@@ -358,7 +500,7 @@ if ( ! class_exists( 'WP_Syntax' ) ) {
 	 *
 	 * @access public
 	 * @since 1.0
-	 * @return mixed (object)
+	 * @return WP_Syntax
 	 */
 	function WP_Syntax() {
 		return WP_Syntax::getInstance();
