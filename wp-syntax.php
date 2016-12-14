@@ -3,7 +3,7 @@
 Plugin Name: WP-Syntax
 Plugin URI: http://www.connections-pro.com
 Description: Syntax highlighting using <a href="http://qbnz.com/highlighter/">GeSHi</a> supporting a wide range of popular languages.
-Version: 1.0
+Version: 1.1
 Author: Steven A. Zahm
 Author URI: http://www.connections-pro.com
 License: GPL2
@@ -139,7 +139,7 @@ if ( ! class_exists( 'WP_Syntax' ) ) {
 		 */
 		private static function defineConstants() {
 
-			define( 'WPS_VERSION', '1.0' );
+			define( 'WPS_VERSION', '1.1' );
 
 			define( 'WPS_DIR_NAME', plugin_basename( dirname( __FILE__ ) ) );
 			define( 'WPS_BASE_NAME', plugin_basename( __FILE__ ) );
