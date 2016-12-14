@@ -120,15 +120,14 @@ if ( ! class_exists( 'WP_Syntax' ) ) {
 			// We want to run before other filters; hence, a priority of 0 was chosen.
 			// The lower the number, the higher the priority.  10 is the default and
 			// several formatting filters run at or around 6.
-			add_filter( 'the_content', array( __CLASS__, 'beforeFilter' ), 0);
-			add_filter( 'the_excerpt', array( __CLASS__, 'beforeFilter' ), 0);
-			add_filter( 'comment_text', array( __CLASS__, 'beforeFilter' ), 0);
+			add_filter( 'the_content', array( __CLASS__, 'beforeFilter' ), 0 );
+			add_filter( 'the_excerpt', array( __CLASS__, 'beforeFilter' ), 0 );
+			add_filter( 'comment_text', array( __CLASS__, 'beforeFilter' ), 0 );
 
 			// We want to run after other filters; hence, a priority of 99.
-			add_filter( 'the_content', array( __CLASS__, 'afterFilterContent' ), 99);
-			add_filter( 'the_excerpt', array( __CLASS__, 'afterFilterExcerpt' ), 99);
-			add_filter( 'comment_text', array( __CLASS__, 'afterFilterComment' ), 99);
-
+			add_filter( 'the_content', array( __CLASS__, 'afterFilterContent' ), 99 );
+			add_filter( 'the_excerpt', array( __CLASS__, 'afterFilterExcerpt' ), 99 );
+			add_filter( 'comment_text', array( __CLASS__, 'afterFilterComment' ), 99 );
 		}
 
 		/**
