@@ -360,6 +360,11 @@ if ( ! class_exists( 'WP_Syntax' ) ) {
 			return $output;
 		}
 
+		/**
+		 * @param string $content
+		 *
+		 * @return string
+		 */
 		public static function beforeFilter( $content ) {
 
 			/*
@@ -379,6 +384,7 @@ if ( ! class_exists( 'WP_Syntax' ) ) {
 				);
 			}
 
+			return $content;
 		}
 
 		public static function afterFilterContent( $content ) {
