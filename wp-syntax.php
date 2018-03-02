@@ -452,9 +452,9 @@ if ( ! class_exists( 'WP_Syntax' ) ) {
 
 			global $comment;
 			$the_post    = $comment;
-			$the_post_id = $comment->comment_ID;
 
 			if ( is_object( $the_post ) ) {
+				$the_post_id = $comment->comment_ID;
 				self::$cache = get_comment_meta( $the_post_id, 'wp-syntax-cache-comment', TRUE );
 
 				if ( ! self::$cache ) {
