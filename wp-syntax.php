@@ -302,7 +302,7 @@ if ( ! class_exists( 'WP_Syntax' ) ) {
 
 			// Do we have cache? Serve it!
 			if ( isset( self::$cache[ self::$cache_match_num ] ) ) {
-				return self::$cache[ self::$cache_match_num ];
+//				return self::$cache[ self::$cache_match_num ];
 			}
 
 			$i = intval( $match[1] );
@@ -314,7 +314,9 @@ if ( ! class_exists( 'WP_Syntax' ) ) {
 			$caption = self::caption( $match[5] );
 			$code = self::trimCode( $match[6] );
 
-			if ( $escaped == 'true' ) $code = htmlspecialchars_decode( $code );
+			//allow characters like -> to work
+			//fixes &gt;
+			$code = htmlspecialchars_decode( $code );
 
 			$geshi = new GeSHi( $code, $language );
 			$geshi->enable_keyword_links( FALSE );
