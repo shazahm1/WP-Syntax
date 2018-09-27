@@ -4,14 +4,13 @@
  * ----------
  * Author: Lucas Werkmeister (mail@lucaswerkmeister.de)
  * Copyright: (c) 2015 Lucas Werkmeister (http://lucaswerkmeister.de)
- * Release Version: 1.0.8.12
+ * Release Version: 1.0.9.0
  * Date Started: 2015-01-08
  *
  * Ceylon language file for GeSHi.
  *
  * CHANGES
  * -------
- * 
  *
  * TODO (updated 2015-06-19)
  * ------------------
@@ -130,7 +129,7 @@ $language_data = array (
          * 1. qualified lidentifiers
          * 2. lidentifiers
          * 3. uidentifiers
-         * 
+         *
          * All of these contain various lookahead and -behind to ensure
          * that we don't match various stuff that GeSHi escapes
          * (for instance, we see semicolons as <SEMI>).
@@ -170,5 +169,3 @@ $language_data = array (
     'SCRIPT_DELIMITERS' => array(),
     'HIGHLIGHT_STRICT_BLOCK' => array()
 );
-
-?>
