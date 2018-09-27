@@ -302,7 +302,7 @@ if ( ! class_exists( 'WP_Syntax' ) ) {
 
 			// Do we have cache? Serve it!
 			if ( isset( self::$cache[ self::$cache_match_num ] ) ) {
-//				return self::$cache[ self::$cache_match_num ];
+				return self::$cache[ self::$cache_match_num ];
 			}
 
 			$i = intval( $match[1] );
