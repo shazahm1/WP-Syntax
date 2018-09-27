@@ -457,10 +457,12 @@ if ( ! class_exists( 'WP_Syntax' ) ) {
 		public static function afterFilterComment( $content ) {
 
 			global $comment;
-			$the_post    = $comment;
-			$the_post_id = $comment->comment_ID;
+
+			$the_post = $comment;
 
 			if ( is_object( $the_post ) ) {
+
+				$the_post_id = $comment->comment_ID;
 				self::$cache = get_comment_meta( $the_post_id, 'wp-syntax-cache-comment', TRUE );
 
 				if ( ! self::$cache ) {
