@@ -1,9 +1,12 @@
 === WP-Syntax ===
 Contributors: shazahm1@hotmail.com
 Tags: syntax highlighting, syntax, highlight, code, formatting, code, CSS, html, php, sourcecode
-Requires at least: 3.0
+Requires at least: 4.7
 Tested up to: 6.0
 Stable tag: 1.1
+Requires PHP: 5.6.20
+License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 WP-Syntax provides clean syntax highlighting for embedding source code within pages or posts.
 
