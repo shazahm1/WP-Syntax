@@ -1,6 +1,5 @@
 === WP-Syntax ===
 Contributors: shazahm1@hotmail.com
-Donate link: http://wp-syntax.com/send-donation/
 Tags: syntax highlighting, syntax, highlight, code, formatting, code, CSS, html, php, sourcecode
 Requires at least: 3.0
 Tested up to: 4.7
@@ -23,7 +22,7 @@ result is source code formatted and highlighted the way you intended.
 Usage, Supported Languages, Styling Guidelines, and Release Notes are availabe
 in the [Other Notes](http://wordpress.org/extend/plugins/wp-syntax/other_notes/) section.
 
-Want to contribute? WP-Sytax can be found on Github. Fork and submit your pull requests today!
+Want to contribute? WP-Sytax can be found on Github. [Fork and submit your pull requests today!](https://github.com/shazahm1/WP-Syntax)
 
 = Basic Usage =
 
