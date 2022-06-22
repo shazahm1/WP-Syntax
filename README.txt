@@ -2,7 +2,7 @@
 Contributors: shazahm1@hotmail.com
 Tags: syntax highlighting, syntax, highlight, code, formatting, code, CSS, html, php, sourcecode
 Requires at least: 3.0
-Tested up to: 4.7
+Tested up to: 6.0
 Stable tag: 1.1
 
 WP-Syntax provides clean syntax highlighting for embedding source code within pages or posts.
