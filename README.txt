@@ -19,10 +19,10 @@ pre-filter and a late post-filter that substitutes and pulls the code snippets
 out first and then pushes them back in with highlighting at the end.  The
 result is source code formatted and highlighted the way you intended.
 
-Usage, Supported Languages, Styling Guidelines, and Release Notes are availabe
+Usage, Supported Languages, Styling Guidelines, and Release Notes are available
 in the [Other Notes](http://wordpress.org/extend/plugins/wp-syntax/other_notes/) section.
 
-Want to contribute? WP-Sytax can be found on Github. [Fork and submit your pull requests today!](https://github.com/shazahm1/WP-Syntax)
+Want to contribute? WP-Syntax can be found on GitHub. [Fork and submit your pull requests today!](https://github.com/shazahm1/WP-Syntax)
 
 = Basic Usage =
 
@@ -32,7 +32,7 @@ The `line` attribute is optional. [More usage examples](http://wordpress.org/ext
 
 == Installation ==
 
-1. Upload wp-syntax.zip to your Wordpress plugins directory, usually `wp-content/plugins/` and unzip the file.  It will create a `wp-content/plugins/wp-syntax/` directory.
+1. Upload wp-syntax.zip to your WordPress plugins directory, usually `wp-content/plugins/` and unzip the file.  It will create a `wp-content/plugins/wp-syntax/` directory.
 1. Activate the plugin through the 'Plugins' menu in WordPress.
 1. Create a post/page that contains a code snippet following the [proper usage syntax](http://wordpress.org/extend/plugins/wp-syntax/other_notes/).
 
@@ -43,7 +43,7 @@ The `line` attribute is optional. [More usage examples](http://wordpress.org/ext
 Try editing code snippets without the visual editor.  To turn off the visual
 editor for all your edits, uncheck the visual editor checkbox in your profile.
 Depending on what type of code you're trying to display, you might also need
-to disable WordPress' corrections of invalidly nested XMTML (under Options ->
+to disable WordPress' corrections of invalidly nested XHTML (under Options ->
 Writing).
 
 = Why can I, as an admin, post code snippets, but my authors cannot? =
@@ -195,24 +195,24 @@ review the [GeSHi Documentation](http://qbnz.com/highlighter/geshi-doc.html).
 * BUG: Ensure string is return in caption.
 * BUG: Fix line numbering bug.
 * BUG: Remove old plugin file.
-* OTHER: UPDATE GeSHi to latest dev branch.
+* OTHER: UPDATE GeSHi to the latest dev branch.
 * DEV: Correct phpDoc errors.
 
 = 1.0 02/09/2013 =
 * NEW: CSS3 for alternating background lines for easier reading.
 * OTHER: Completely refactor code to utilize current best practices for plugin development which will provide a solid foundation for further development.
 * OTHER: Remove GeSHi contrib and test folders.
-* OTHER: Move CSS to `css` subfolder.
-* OTHER: Move JavaScript to `js` subfolder.
+* OTHER: Move CSS to `css` sub-folder.
+* OTHER: Move JavaScript to `js` sub-folder.
 * OTHER: CSS fixes to keep theme from breaking output formatting.
 
 = 0.9.13 09/01/12 =
 * FEATURE: Added a new "src" shortcode option to allow reference of the source filename. Props: Steffen Vogel
 * BUG: Properly enqueue the CSS file.
-* BUG: Updated TinyMCE whitelist to allows required tags. Props: Steffen Vogel
+* BUG: Updated TinyMCE allow list to allow required tags. Props: Steffen Vogel
 * OTHER: Updated GeSHi to 1.0.8.11
 * OTHER: Remove old unused code.
-* OTHER: Imporved line highlighting. Props: Steffen Vogel
+* OTHER: Improved line highlighting. Props: Steffen Vogel
 * OTHER: Added some additional CSS styles to help keep theme's from breaking the presentation of the code.
 
 **0.9.12** : Fixed a range bug in the new highlight feature.
@@ -251,7 +251,7 @@ review the [GeSHi Documentation](http://qbnz.com/highlighter/geshi-doc.html).
   font-size setting in the default css to thwart complaints about small sizes
   caused by other default WP themes;
 
-**0.7** : Automaticaly included common styles without requiring manual theme
+**0.7** : Automatically included common styles without requiring manual theme
   customization [Christian Heim]; Added support for adding a custom
   wp-syntax.css stylesheet to a theme;
 
