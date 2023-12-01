@@ -3,7 +3,7 @@ Contributors: shazahm1@hotmail.com
 Tags: syntax highlighting, syntax, highlight, code, formatting, code, CSS, html, php, sourcecode
 Requires at least: 4.7
 Tested up to: 6.4
-Stable tag: 1.1
+Stable tag: 1.2
 Requires PHP: 5.6.20
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
