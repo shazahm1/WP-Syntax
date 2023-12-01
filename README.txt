@@ -187,6 +187,14 @@ review the [GeSHi Documentation](http://qbnz.com/highlighter/geshi-doc.html).
 
 == Changelog ==
 
+= 1.1 12/01/2023 =
+* TWEAK: Ensure `$content` is always returned by the filter callback.
+* TWEAK: Slash the highlighted code blocks before saving cache to the post meta.
+* BUG: Cache each page of a multi-paged post separately.
+* BUG: Fix notice level error when global $comment is not available.
+* OTHER: Update GeSHi to version 1.0.9.1 at GH commit 7884d22 on Feb 19, 2023.
+* OTHER: Correct misspellings.
+
 = 1.1 12/14/2016 =
 * NEW: Introduce caching of the syntax highlighted code rather than parsing it on page load.
 * NEW: Introduce double click to copy code from highlight code block. Props zavr!
